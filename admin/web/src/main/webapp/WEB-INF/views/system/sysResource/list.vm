@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>资源列表</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="static/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="static/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css"
+          rel="stylesheet">
+    <!-- DataTables Responsive CSS -->
+    <link href="static/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="static/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="static/zTree/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="static/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+
+<body>
+
+<div id="wrapper">
+    <div id="page-wrapper" style="padding: 5px">
+        <div class="well">
+            <div class="row">
+                <form class="form-horizontal" role="form">
+                    <div class="col-lg-1">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="资源名称" name="resource_name" id="resource_name"
+                                   autofocus>
+                        </div>
+                    </div>
+                    <button type="button" id="queryBtn" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>查询</button>
+                    <button type="button" id="addBtn" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>资源列表</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="dataTable_wrapper">
+                            <table width="100%" class="table table-striped table-bordered table-hover"
+                                   id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>资源类型</th>
+                                    <th>资源名称</th>
+                                    <th>资源描述</th>
+                                    <th>资源路径</th>
+                                    <th>上级资源</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--添加-->
+<div id="addWin" style="display: none">
+    <div class="row" style="margin: 10px">
+        <div class="login-panel panel panel-default">
+            <div class="panel-body">
+                <form role="form" action="resource/addResource" method="post" id="addForm">
+                    <fieldset>
+                        <input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
+                        <div>
+                            <label>资源类型*：</label>
+                            <div class="form-group">
+                                <select name="resource_type" class="form-control" required>
+                                    <option value="url">地址</option>
+                                    <option value="button">按钮</option>
+                                    <option value="link">链接</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>上级资源*：</label>
+                            <div class="form-group">
+                                <select name="resource_parent" id="resource_parent" class="form-control"></select>
+                            </div>
+                        </div>
+                    #*<div>
+                        <label>是否生效*：</label>
+                        <div class="form-group">
+                            <select name="enable">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </div>
+                    </div>*#
+                        <div>
+                            <label>资源名称*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_name" id="resource_name"
+                                       placeholder="资源名称"
+                                       required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源描述*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_desc" placeholder="资源描述"
+                                       required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源路径*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_path" placeholder="资源路径"
+                                       required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源级别：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_level" placeholder="资源级别 数字类型"
+                                       required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源图标：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_icon" placeholder="资源图标"
+                                       value="fa fa-edit fa-fw">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>排序编号：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="order_no" placeholder="排序编号 数字类型">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>按钮html：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="btn_style" placeholder="按钮HTML">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>按钮位置：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="btn_index" placeholder="按钮位置">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改 -->
+<div id="updateWin" style="display: none">
+    <div class="row" style="margin: 10px">
+        <div class="login-panel panel panel-default">
+            <div class="panel-body">
+                <form role="form" action="resource/updateResource" method="post" id="updateForm" parsley-validate>
+                    <fieldset>
+                        <div>
+                            <input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
+                            <input type="hidden" value="" name="idUpdate" id="idUpdate">
+                        </div>
+                        <div class="form-group">
+                            <label>资源类型*：</label>
+                            <select name="resource_type_update" id="resource_type_update" class="form-control" required>
+                                <option value="url">地址</option>
+                                <option value="button">按钮</option>
+                                <option value="link">链接</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>上级资源*：</label>
+                            <div class="form-group">
+                                <select name="resource_parent_update" id="resource_parent_update"
+                                        class="form-control"></select>
+                            </div>
+                        </div>
+                    #*<div>
+                        <label>是否生效*：</label>
+                        <div class="form-group">
+                            <select name="enable_update" id="enable_update">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </div>
+                    </div>*#
+                        <div>
+                            <label>资源名称*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_name_update"
+                                       id="resource_name_update" placeholder="资源名称"
+                                       required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源描述*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_desc_update"
+                                       id="resource_desc_update" placeholder="资源描述" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源路径*：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_path_update"
+                                       id="resource_path_update" placeholder="资源路径" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源级别：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_level_update"
+                                       id="resource_level_update" placeholder="资源级别 数字类型" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>资源图标：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="resource_icon_update"
+                                       id="resource_icon_update" placeholder="资源图标"
+                                       value="fa fa-edit fa-fw">
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <label>排序编号：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="order_no_update" id="order_no_update"
+                                       placeholder="排序编号 数字类型" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>按钮样式：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="btn_style_update" id="btn_style_update"
+                                       placeholder="按钮样式">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>按钮索引：</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="btn_index_update" id="btn_index_update"
+                                       placeholder="按钮索引">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="static/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="static/bower_components/datatables-plugins/api/fnReloadAjax.js"></script>
+<script src="static/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="static/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+<script src="static/js/common.js"></script>
+<script src="static/layer/layer.js"></script>
+<script src="static/js/jquery.form.js"></script>
+<script src="static/parsley/i18n/messages.zh_cn.js"></script>
+<script src="static/parsley/parsley.min.js"></script>
+<script src="static/js/moment.js"></script>
+<script>
+    var aoColumns = [
+        {"mData": "id"},
+        {"mData": "resource_type"},
+        {"mData": "resource_name"},
+        {"mData": "resource_desc"},
+        {"mData": "resource_path"},
+        {"mData": "resource_parent"},
+        {"mData": "create_time"},
+        {"mData": null}
+    ];
+
+    var aoColumnDefs = [{
+        "aTargets": [7],
+        "mRender": function (a, b, c, d) {
+            return "<button type=\"button\" class=\"btn-link\" onclick=\"edit('" + c.id + "')\">修改</button><button type=\"button\" class=\"btn-link\" onclick=\"del('" + c.id + "')\">删除</button>";
+        }
+    }, {
+        "aTargets": [6],
+        "mRender": function (a, b, c, d) {
+            return moment(a).format('YYYY-MM-DD HH:mm:ss');
+        }
+    }];
+    var tbl;
+    $(document).ready(function () {
+        var data = "${_csrf.parameterName}=${_csrf.token}";
+        tbl = tableContent1("dataTables-example", "resource/queryResources", aoColumns, aoColumnDefs, data);
+        $("#queryBtn").bind("click", function () {
+            var resource_name = $("#resource_name");
+            var data = "${_csrf.parameterName}=${_csrf.token}&resource_name=" + resource_name.val();
+            tbl.fnReloadAjax("resource/queryResources?" + data);
+        });
+
+        //添加
+        var addBtn = $('#addBtn');
+        addBtn.click(function () {
+            var betBot = layer.open({
+                area: ['600px', '860px'],
+                title: "新增资源",
+                type: 1,
+                content: $("#addWin"),
+                btn: ['添加', '关闭'],
+                success: function () {
+                    //查询父类信息
+                    queryAllResource('resource_parent');
+                    $("#addForm").resetForm();
+                    $("#addForm").parsley().reset();
+                },
+                yes: function (layero, index) {
+                    if ($('#addForm').parsley().validate()) {
+                        $("#addForm").ajaxSubmit({
+                            success: function (d) {
+                                if (d.code == 200) {
+                                    layer.msg("添加数据成功");
+                                    layer.closeAll();
+                                    tbl.fnReloadAjax();
+                                } else {
+                                    layer.msg(d.message);
+                                }
+                            }
+                        })
+                    }
+                },
+                cancel: function (index, layero) {
+                    layer.close(index);
+                }
+            });
+        });
+    });
+    //修改
+    function edit(id) {
+        $.post("resource/queryResourceForId", {"${_csrf.parameterName}": "${_csrf.token}", "id": id}, function (data) {
+            if (data.code == 200) {
+                var d = data.data;
+                $("#idUpdate").val(d.id);
+                $("#resource_type_update").find("option[value='" + d.resource_type + "']").attr("selected", true);
+                $("#enable_update").find("option[value='" + d.enable + "']").attr("selected", true);
+                $("#resource_parent_update").find("option[value='" + d.resource_parent + "']").attr("selected", true);
+
+                $("#resource_name_update").val(d.resource_name);
+                $("#resource_desc_update").val(d.resource_desc);
+                $("#resource_path_update").val(d.resource_path);
+
+
+                $("#resource_icon_update").val(d.resource_icon);
+                $("#order_no_update").val(d.order_no);
+                $("#resource_level_update").val(d.resource_level);
+                $("#btn_style_update").val(d.btn_style);
+                $("#btn_index_update").val(d.btn_index);
+                layer.open({
+                    area: ['600px', '860px'],
+                    title: "修改",
+                    type: 1,
+                    content: $("#updateWin"),
+                    btn: ['确定', '关闭'],
+                    success: function () {
+                        //查询父类信息
+                        queryAllResource('resource_parent_update');
+                        $("#updateForm").parsley().reset();
+                    },
+                    yes: function (layero, index) {
+                        if ($('#updateForm').parsley().validate()) {
+                            $("#updateForm").ajaxSubmit({
+                                success: function (d) {
+                                    if (d.code == 200) {
+                                        tbl.fnReloadAjax();
+                                        layer.closeAll();
+                                        layer.msg("修改成功！");
+                                    } else {
+                                        layer.msg(d.message);
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    cancel: function (index, layero) {
+                        layer.close(index);
+                    }
+                });
+            } else {
+                layer.msg("更新数据失败");
+            }
+
+        }, "json");
+    }
+    function del(id) {
+        layer.confirm("你确定要删除该数据吗？", function (index) {
+            $.post("resource/delResource", {"${_csrf.parameterName}": "${_csrf.token}", "id": id}, function (data) {
+                if (data.code == 200) {
+                    layer.msg("删除成功");
+                    layer.close(index);
+                    tbl.fnReloadAjax();
+                }
+            }, "json");
+
+        });
+    }
+</script>
+
+<script>
+    //查询新增时要选的上级菜单数据
+    function queryAllResource(id) {
+        $('#' + id).empty();
+        $.post("resource/queryResourceParent", {"${_csrf.parameterName}": "${_csrf.token}"}, function (data) {
+            if (data.code == "200") {
+                var option = "<option value=''></option>";
+                $.each(data.data, function (n, value) {
+                    option += '<option value="' + value.id + '">' + value.resource_name + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value.resource_level + '</option>';
+                });
+                $('#' + id).append(option);
+            }
+        });
+    }
+
+</script>
+
+</body>
+
+</html>

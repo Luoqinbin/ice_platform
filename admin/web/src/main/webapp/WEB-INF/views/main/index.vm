@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh_ch">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="static/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Timeline CSS -->
+    <link href="static/dist/css/timeline.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="static/dist/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="static/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function menuChange() {
+            $(".sidebar").toggle();
+            if ($(".sidebar").is(":hidden")) {
+                $("#page-wrapper").css({"padding-left": 20});
+            } else {
+                $("#page-wrapper").css({"padding-left": 270});
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" onclick="menuChange()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index/main">Ice后台管理</a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>
+                    $user_info.name
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                ##                    <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a>
+                ##                    </li>
+                    <li><a href="javascript:changePassword()"><i class="fa fa-gear fa-fw"></i> 修改密码</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0)" id="logout">
+                            <form method="post" action="/login/logout" id="logout_form">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                <i class="fa fa-sign-out fa-fw"></i> 退出
+                            </form>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="navbar-default sidebar" role="navigation" style="border-right: 1px solid #e7e7e7;">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+
+                    #foreach($menu in $menuList)
+                        <li>
+                            #if($menu.resource_level==1)
+                                <a href="javascript:void(0)"><i class="$menu.resource_icon"></i>$menu.resource_name
+                                <span class="fa arrow"></span>
+                                #elseif($menu.resource_level==-1)
+                                    <li>
+                                    <a href="javascript:void(0)" data-id = "$menu.id" data-index="$menu.order_no" data-name="$menu.resource_name" name="clickUrl" data-url="$menu.resource_path?menuId=$menu.id"><i class="fa fa-dashboard fa-fw"></i> $menu.resource_name </a>
+                                   </li>
+                            #end
+                           </a>
+                            #if($menu.childs.size()>0 )
+                                <ul class="nav nav-second-level">
+                                    #foreach($second in $menu.childs)
+                                        <li>
+                                            #if($second.childs.size()>0)
+                                                 <a href="javascript:void(0)"> $second.resource_name <span class="fa arrow"></span>
+                                                #else
+                                                 <a href="javascript:void(0)" data-id = "$second.id" data-index="$second.order_no" data-name="$second.resource_name" name="clickUrl" data-url="$second.resource_path?menuId="$second.id+"> $second.resource_name
+                                            #end
+                                            </a>
+                                            #if($second.childs!='null')
+                                                <ul class="nav nav-third-level">
+                                                    #foreach($third in $second.childs)
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-index="$third.order_no "  data-name="$third.resource_name" name="clickUrl" data-url="$third.resource_path?menuId=$third.id">$third.resource_name</a>
+                                                        </li>
+                                                    #end
+                                                </ul>
+                                            #end
+                                        </li>
+                                    #end
+                                </ul>
+                            #end
+                        </li>
+                    #end
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" style="position: absolute; padding-left: 270px; top: 55px; z-index: 10; width: 100%;">
+        <div class="row" id="page-wrapper-row">
+            <ul class="nav nav-tabs" role="tablist" style="margin-top:5px;">
+            </ul>
+            <div class="tab-content" style="width:100%;height:98%;">
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- jQuery -->
+<script src="static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="static/bower_components/bootstrap/js/tab.js"></script>
+<script src="static/js/bootstrap-closable-tab.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="static/dist/js/sb-admin-2.js"></script>
+<script src="static/layer/layer.js"></script>
+
+<script type="application/javascript">
+
+    $(function () {
+        $(".navbar-toggle").show();
+
+        $('#side-menu').metisMenu();
+        $("a[name='clickUrl']").each(function (i, o) {
+            var that = $(this);
+            $(this).click(function () {
+                var item = {
+                    'id': that.attr("data-id"),
+                    'name': that.attr("data-name"),
+                    'url': that.attr("data-url"),
+                    'closable': true
+                };
+                closableTab.addTab(item);
+            });
+        });
+        var item = {
+            'id': '1',
+            'name': 'Welcome',
+            'url': $("a[name='clickUrl']").eq(0).attr("data-url"),
+            'closable': true
+        };
+        closableTab.addTab(item);
+
+
+        $("#logout").bind("click", function () {
+            $("#logout_form").submit();
+        });
+        var h = $(window).height() - 51;
+        $(".sidebar").css("height", h);
+        $("#page-wrapper-row").css("height", h - 60);
+    });
+
+
+</script>
+
+<div id="changePasswordWarp" style="display: none">
+    <div class="row" style="margin: 10px">
+
+        <div class="panel-body">
+
+            <fieldset>
+                <label>确认旧密码：</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="oldPassword" id="oldPassword" placeholder="确认旧密码">
+                </div>
+                <div>
+                    <label>输入新密码：</label>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="newPassword" id="newPassword"
+                               placeholder="新密码最少六位">
+                    </div>
+                </div>
+                <div>
+                    <label>确认新密码：</label>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPassword"
+                               placeholder="要与新密码一致">
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+
+    </div>
+</div>
+<script type="application/javascript">
+    //密码修改功能
+    function changePassword() {
+        var s = layer.open({
+            type: 1,
+            content: $("#changePasswordWarp"),
+            title: '密码修改',
+            area: ['500px', 'auto'],
+            shadeClose: true,
+            success: function () {
+            }
+            , btn: ['确定', '取消'],
+            yes: function (index) {
+                if (submitCheck() == true) {
+                    $.post("pass/doChangePassword.do",
+                            {
+                                '${_csrf.parameterName}': '${_csrf.token}',
+                                'oldPassword': $("#oldPassword").val(),
+                                'newPassword': $("#newPassword").val(),
+                                'confirmNewPassword': $("#confirmNewPassword").val(),
+                            }, function (data) {
+                                if (data.code == "200") {
+                                    layer.close(1);
+                                    layer.msg("密码修改成功，请重新登陆！");
+                                } else {
+                                    layer.close(1);
+                                    layer.msg("密码修改失败:" + data.message);
+                                }
+                            });
+                }
+            },
+        })
+    }
+    function submitCheck() {
+        var oldPassword = $("#oldPassword");
+        var newPassword = $("#newPassword");
+        var confirmNewPassword = $("#confirmNewPassword");
+        if ($.trim(oldPassword.val()) == "") {
+            layer.msg("旧密码不能为空！");
+            return false;
+        }
+        if ($.trim(newPassword.val()) == "") {
+            layer.msg("新密码不能为空！");
+            return false;
+        }
+        if ($.trim(confirmNewPassword.val()) == "") {
+            layer.msg("请确认新密码！");
+            return false;
+        }
+        if ($.trim(newPassword.val()).length < 6) {
+            layer.msg("新密码不能小于六位！");
+            return false;
+        }
+        if ($.trim(confirmNewPassword.val()) != $.trim(newPassword.val())) {
+            layer.msg("新密码与确认新密码不相同！");
+            return false;
+        }
+        return true;
+    }
+    function addTab(id, title, url) {
+        var item = {
+            'id': id,
+            'name': title,
+            'url': url,
+            'closable': true
+        };
+        closableTab.addTab(item);
+    }
+    function closeTab(id) {
+        closableTab.closeTab1(id);
+    }
+    function reloadTab(id) {
+        closableTab.reloadTab(id);
+    }
+    function getIframe(id) {
+        return closableTab.getIframe(id);
+    }
+</script>
+
+</body>
+
+</html>
