@@ -13,7 +13,7 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
 
-    <bean id="propertyConfigurer"  class="com.ice.utils.PropertyPlaceholder">
+    <bean id="propertyConfigurer"  class="com.badminton.utils.PropertyPlaceholder">
         <property name="locations">
             <list>
                 <value>classpath:jdbc.properties</value>
@@ -49,11 +49,11 @@
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <property name="mapperLocations" value="classpath:mybatis/**/*.xml"></property>
-        <property name="typeAliasesPackage" value="com.ice.entity" />
+        <property name="typeAliasesPackage" value="com.badminton.entity" />
         <property name="plugins">
 			<array>
                 <!--分页拦截器-->
-                <bean class="com.ice.interceptors.mySqlHelper.pagehelper.PageHelper">
+                <bean class="com.badminton.interceptors.mySqlHelper.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
                             dialect=mysql
@@ -64,11 +64,11 @@
                         </value>
                     </property>
                 </bean>
-                <bean class="com.ice.interceptors.mySqlHelper.conditionHelper.ConditionHelper"></bean>
+                <bean class="com.badminton.interceptors.mySqlHelper.conditionHelper.ConditionHelper"></bean>
 				<bean class="com.github.abel533.mapperhelper.MapperInterceptor">
 					<property name="properties">
 						<value>
-                            mappers=com.ice.mapper.BaseMapper
+                            mappers=com.badminton.mapper.BaseMapper
                             IDENTITY=MYSQL
                             notEmpty=true
                         </value>
@@ -79,7 +79,7 @@
     </bean>
 
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ice.*.mapper" />
+        <property name="basePackage" value="com.badminton.*.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
@@ -103,7 +103,7 @@
 
     <!-- 事务处理 -->
     <aop:config>
-        <aop:pointcut id="pc" expression="execution(* com.ice.*.service.*.*(..))"/>
+        <aop:pointcut id="pc" expression="execution(* com.badminton.*.service.*.*(..))"/>
         <aop:advisor pointcut-ref="pc" advice-ref="txAdvice"/>
     </aop:config>
 

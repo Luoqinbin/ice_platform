@@ -15,13 +15,13 @@
     <context:annotation-config/>
 
     <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
-    <context:component-scan base-package="com.ice">
+    <context:component-scan base-package="com.badminton">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <mvc:annotation-driven/>
 
-    <context:component-scan base-package="com.ice.*.controller"/>
+    <context:component-scan base-package="com.badminton.*.controller"/>
 
     <!-- 对静态资源文件的访问 restful -->
     <mvc:resources mapping="/static/**" location="/static/"/>
@@ -117,5 +117,26 @@
         <property name="defaultLocale" value="zh_CN"/>
         <property name="cookieName" value="Language"></property>
     </bean>
-
+    <!-- 全局异常配置 start -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">errors/error</prop>
+                <prop key="java.lang.Throwable">errors/err</prop>
+            </props>
+        </property>
+        <property name="statusCodes">
+            <props>
+                <prop key="errors/error">500</prop>
+                <prop key="errors/404">404</prop>
+            </props>
+        </property>
+        <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+        <property name="warnLogCategory" value="WARN"></property>
+        <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+        <property name="defaultErrorView" value="errors/error"></property>
+        <!-- 默认HTTP状态码 -->
+        <property name="defaultStatusCode" value="500"></property>
+    </bean>
+    <!-- 全局异常配置 end -->
 </beans>

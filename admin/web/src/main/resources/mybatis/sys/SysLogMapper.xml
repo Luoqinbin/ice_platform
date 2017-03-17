@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 
-<mapper namespace="com.ice.admin.mapper.SysLogMapper">
-	<resultMap id="BaseResultMap" type="com.ice.entity.system.SysLog">
+<mapper namespace="com.badminton.admin.mapper.SysLogMapper">
+	<resultMap id="BaseResultMap" type="com.badminton.entity.system.SysLog">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 	</resultMap>
 </mapper>

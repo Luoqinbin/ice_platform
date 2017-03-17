@@ -22,7 +22,7 @@
     <sec:http pattern="/static/**" security="none"></sec:http>
     <sec:http pattern="/ueditor/**" security="none"></sec:http>
     <sec:http pattern="/druid/**" security="none"></sec:http>
-    <sec:http pattern="/page/**" security="none"></sec:http>
+    <sec:http pattern="/errors/**" security="none"></sec:http>
     <sec:http pattern="/image/**" security="none"></sec:http>
     <sec:http pattern="/favicon.ico" security="none"></sec:http>
     <sec:http auto-config="true" access-decision-manager-ref="accessDecisionManager"
@@ -48,12 +48,12 @@
     </sec:http>
 
     <!-- 注销成功 -->
-    <bean id="logoutSuccessHandler" class="com.ice.security.CustomLogoutSuccessHandler">
+    <bean id="logoutSuccessHandler" class="com.badminton.security.CustomLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/login/doLogin"></property>
     </bean>
 
     <!---登录-->
-    <bean id="authenticationSuccessHandler" class="com.ice.security.SimpleLoginSuccessHandler">
+    <bean id="authenticationSuccessHandler" class="com.badminton.security.SimpleLoginSuccessHandler">
         <property name="defaultTargetUrl" value="/index/main.do"></property>
         <property name="forwardToDestination" value="false"></property>
     </bean>
@@ -80,7 +80,7 @@
     <bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter"/>
 
     <!-- 资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色去访问。 -->
-    <bean id="securityMetadataSource" class="com.ice.security.SecurityMetadataSourceService"/>
+    <bean id="securityMetadataSource" class="com.badminton.security.SecurityMetadataSourceService"/>
 
     <!-- 用户的密码加密或解密 -->
     <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
@@ -98,7 +98,7 @@
 
     <bean class="org.springframework.security.authentication.event.LoggerListener"/>
 
-    <bean id="defaultUserDetailsService" class="com.ice.security.DefaultUserDetailsService"/>
+    <bean id="defaultUserDetailsService" class="com.badminton.security.DefaultUserDetailsService"/>
 
     <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
         <property name="userPropertyToUse" value="username"/>
@@ -115,11 +115,11 @@
     <!-- 缓存用户管理 -->
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
 
-    <bean id="loginAuthenticationEntryPoint" class="com.ice.security.LoginAuthenticationEntryPoint">
+    <bean id="loginAuthenticationEntryPoint" class="com.badminton.security.LoginAuthenticationEntryPoint">
         <constructor-arg value="/login/doLogin"/>
         <property name="useForward" value="true"/>
     </bean>
-    <bean id="accessDeniedHandler" class="com.ice.security.RequestAccessDeniedHandler">
+    <bean id="accessDeniedHandler" class="com.badminton.security.RequestAccessDeniedHandler">
         <property name="errorPage" value="/403.jsp"></property>
     </bean>
 
@@ -131,7 +131,7 @@
     <bean id="concurrentSessionControlStrategy"
           class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
         <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
-        <property name="maximumSessions" value="3"></property>
+        <property name="maximumSessions" value="1"></property>
         <property name="exceptionIfMaximumExceeded" value="true"></property>
     </bean>
 
@@ -140,7 +140,7 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>messages</value>
+                <value>messages/message</value>
                 <value>org/springframework/security/messages</value>
             </list>
         </property>

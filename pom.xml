@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.ice.platform</groupId>
-	<artifactId>com-ice-root</artifactId>
+	<groupId>com.badminton.platform</groupId>
+	<artifactId>com-badminton-root</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 
@@ -204,6 +204,11 @@
 			<scope>compile</scope>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -234,34 +239,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<name>user-releases</name>
-			<url>http://172.16.103.176:8083/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>user-snapshots</name>
-			<url>http://172.16.103.176:8083/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>http://172.16.103.176:8083/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
 </project>

@@ -1,13 +1,37 @@
 define(["dojo"], function (dojo) {
+
 	var module = {
 		
 		/**
 		 * 初始化默认的分页table
 		 */
 		initPageTable: function (/**Node*/dom, /**String*/url, /**Array*/aoColumns, /**Array*/aoColumnDefs, /**function*/conditionFun, /**function*/initHandlerFun, /**String*/language) {
-			return $(dom).dataTable(module._getDefaultConfig(url, aoColumns, aoColumnDefs, conditionFun, initHandlerFun, language));
+
+			var t = $(dom).dataTable(module._getDefaultConfig(url, aoColumns, aoColumnDefs, conditionFun, initHandlerFun, language));
+            t.on('click', 'tbody tr', function () {
+            	var that = $(this);
+
+				if (that.hasClass('active') ) {
+					that.removeClass('active');
+				}
+				else {
+					$('tbody tr.active').removeClass('active');
+					that.addClass('active');
+				}
+            });
+            return t;
 		},
-		
+
+		getRowData:function (dom) {
+			var table = $(dom).dataTable();
+            var nTrs = table.fnGetNodes();
+            for(var i = 0; i < nTrs.length; i++){
+                if($(nTrs[i]).hasClass('active')){
+                  return table.fnGetData(nTrs[i]);//fnGetData获取一行的数据
+                }
+            }
+        },
+
 		/**
 		 * 初始化自定义配置的table
 		 */
